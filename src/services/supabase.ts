@@ -148,11 +148,16 @@ export const getMenuImageUrl = (imagePath: string): string => {
     return imagePath;
   }
 
+  // Debug logging
+  console.log('Getting image URL for:', imagePath);
+
 
   // Get public URL from Supabase Storage
   const { data } = supabase.storage
     .from(MENU_IMAGES_BUCKET)
     .getPublicUrl(imagePath);
+
+  console.log('Generated URL:', data?.publicUrl);
 
   return data?.publicUrl || '/assets/images/veganpopcornchickentofurecipe-h1.jpg';
 };
