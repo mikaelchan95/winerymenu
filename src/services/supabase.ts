@@ -132,6 +132,7 @@ export const fetchFeaturedMenuItems = async (): Promise<MenuItem[]> => {
     console.error('Error in fetchFeaturedMenuItems:', error);
     return [];
   }
+}
 export const MENU_IMAGES_BUCKET = 'food-images';
 
 /**
