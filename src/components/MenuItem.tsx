@@ -143,7 +143,6 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, onAddToCart, compact =
           <h3 className="text-xl font-bold text-gray-900 line-clamp-2 flex-1 leading-tight">
             {item.name}
           </h3>
-          <span className="text-2xl font-bold text-gray-900 ml-4 flex-shrink-0">${item.price}</span>
         </div>
         
         {/* Description */}
