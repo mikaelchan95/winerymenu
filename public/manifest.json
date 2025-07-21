@@ -1,0 +1,101 @@
+{
+  "name": "The Winery Tapas Bar",
+  "short_name": "The Winery",
+  "description": "Fine Wine & Spanish Tapas ordering system",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["food", "restaurants"],
+  "icons": [
+    {
+      "src": "/assets/logos/Winery Logo.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/logos/Winery Logo.png", 
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/logos/Winery Logo.png",
+      "sizes": "128x128", 
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/logos/Winery Logo.png",
+      "sizes": "144x144",
+      "type": "image/png", 
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/logos/Winery Logo.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/logos/Winery Logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/logos/Winery Logo.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/logos/Winery Logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Daily Specials",
+      "short_name": "Specials",
+      "description": "View today's special offers",
+      "url": "/?tab=promotions",
+      "icons": [
+        {
+          "src": "/assets/logos/Winery Logo.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Drinks Menu", 
+      "short_name": "Drinks",
+      "description": "Browse our wine and cocktail selection",
+      "url": "/?category=drinks",
+      "icons": [
+        {
+          "src": "/assets/logos/Winery Logo.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Order History",
+      "short_name": "Orders", 
+      "description": "View your previous orders",
+      "url": "/?tab=orders",
+      "icons": [
+        {
+          "src": "/assets/logos/Winery Logo.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}
