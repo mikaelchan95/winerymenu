@@ -12,8 +12,9 @@ import { DailyPromotions } from './components/DailyPromotions';
 import { OrderHistory } from './components/OrderHistory';
 import { TapasNightTimer } from './components/TapasNightTimer';
 import { categories, drinkCategories } from './data/categories';
-import { menuItems } from './data/menu';
 import { tapasNightItems } from './data/tapasNight';
+import { useMenuItems } from './hooks/useMenuItems';
+import { LoadingSpinner } from './components/LoadingSpinner';
 import { MenuItem as MenuItemType, CartItem, Order, TapasNightSession } from './types';
 import { 
   loadOrdersFromStorage, 
@@ -68,6 +69,9 @@ function App() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [tapasSession, setTapasSession] = useState<TapasNightSession | null>(null);
   const [isTimerMinimized, setIsTimerMinimized] = useState(false);
+
+  // Load menu items from Supabase
+  const { menuItems, isLoading: isLoadingMenu, error: menuError, refetch: refetchMenu } = useMenuItems();
 
   // Load orders and tapas session from localStorage on mount
   useEffect(() => {
@@ -316,6 +320,32 @@ function App() {
         
         return (
           <div>
+            {/* Loading State */}
+            {isLoadingMenu && (
+              <div className="flex justify-center py-12">
+                <LoadingSpinner size="lg" text="Loading menu..." />
+              </div>
+            )}
+
+            {/* Error State */}
+            {menuError && (
+              <div className="bg-red-50 border border-red-200 rounded-2xl p-6 mb-6">
+                <div className="flex items-center space-x-3">
+                  <AlertCircle size={20} className="text-red-600 flex-shrink-0" />
+                  <div>
+                    <h3 className="font-semibold text-red-900">Unable to Load Menu</h3>
+                    <p className="text-red-700 text-sm mt-1">{menuError}</p>
+                    <button
+                      onClick={refetchMenu}
+                      className="mt-2 text-red-600 hover:text-red-700 text-sm font-medium underline"
+                    >
+                      Try Again
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Tapas Session Alert */}
             {tapasSession && tapasSession.isActive && activeCategory === 'tapas' && (
               <div className="mb-6 bg-gradient-to-r from-green-50 to-green-100 border-2 border-green-200 rounded-2xl p-6">
@@ -425,24 +455,26 @@ function App() {
               </div>
             )}
 
-            <div className={`
+            {!isLoadingMenu && !menuError && (
+              <div className={`
               grid gap-4
               ${isCompactView 
                 ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6' 
                 : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
               }
-            `}>
-              {filteredItems.map((item) => (
-                <MenuItem
-                  key={item.id}
-                  item={item}
-                  onAddToCart={handleAddToCart}
-                  compact={isCompactView}
-                />
-              ))}
-            </div>
+              `}>
+                {filteredItems.map((item) => (
+                  <MenuItem
+                    key={item.id}
+                    item={item}
+                    onAddToCart={handleAddToCart}
+                    compact={isCompactView}
+                  />
+                ))}
+              </div>
+            )}
 
-            {filteredItems.length === 0 && vegetarianOnly && (
+            {!isLoadingMenu && !menuError && filteredItems.length === 0 && vegetarianOnly && (
               <div className="text-center py-12">
                 <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <Leaf size={24} className="text-gray-300" />
