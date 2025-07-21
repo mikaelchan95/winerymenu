@@ -48,25 +48,6 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, onAddToCart, compact =
         </div>
         
         {/* Compact Badges Row */}
-        <div className="flex items-center flex-wrap gap-2 mb-4 min-h-[24px]">
-          {item.spiceLevel && item.spiceLevel >= 2 && (
-            <div className="bg-red-500 text-white text-xs px-2 py-1 rounded-lg font-bold flex items-center space-x-1">
-              <Flame size={10} />
-              <span>{item.spiceLevel}</span>
-            </div>
-          )}
-          
-          {item.tags?.includes('vegetarian') && (
-            <div className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-lg font-medium flex items-center space-x-1" aria-label="Vegetarian">
-              <Leaf size={10} />
-              <span>Veg</span>
-            </div>
-          )}
-
-          {item.allergens && item.allergens.length > 0 && (
-            <AlertCircle size={12} className="text-amber-500" />
-          )}
-        </div>
 
         {/* Description for larger compact cards */}
         <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-1 leading-relaxed">
@@ -167,49 +148,6 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, onAddToCart, compact =
         
         {/* Description */}
         <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-1 leading-relaxed">{item.description}</p>
-        
-        {/* Tags */}
-        {item.tags && item.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            {/* Spice Level - Moved to content area */}
-            {item.spiceLevel && item.spiceLevel >= 2 && (
-              <span className="bg-red-50 text-red-700 text-xs px-3 py-1 rounded-full font-medium flex items-center space-x-1 border border-red-100">
-                <Flame size={10} />
-                <span>Spicy {item.spiceLevel}/5</span>
-              </span>
-            )}
-            
-            {/* Vegetarian Tag - Moved to content area */}
-            {item.tags?.includes('vegetarian') && (
-              <span className="bg-green-50 text-green-700 text-xs px-3 py-1 rounded-full font-medium flex items-center space-x-1 border border-green-100">
-                <Leaf size={10} />
-                <span>Vegetarian</span>
-              </span>
-            )}
-            
-            {/* Other Tags */}
-            {item.tags.slice(0, 3).map(tag => (
-              tag !== 'vegetarian' && (
-              <span 
-                key={tag} 
-                className="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full font-medium"
-              >
-                {tag}
-              </span>
-              )
-            ))}
-          </div>
-        )}
-        
-        {/* Allergens */}
-        {item.allergens && item.allergens.length > 0 && (
-          <div className="flex items-center space-x-2 mb-4 p-3 bg-amber-50 rounded-xl border border-amber-100">
-            <AlertCircle size={16} className="text-amber-600 flex-shrink-0" />
-            <span className="text-xs text-amber-700 font-medium">
-              Contains: {item.allergens.join(', ')}
-            </span>
-          </div>
-        )}
         
         {/* Quantity & Add Section */}
         <div className="mt-auto">
