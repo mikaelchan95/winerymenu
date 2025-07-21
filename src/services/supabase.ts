@@ -13,6 +13,11 @@ if (!supabaseUrl || !supabaseAnonKey) {
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 /**
+ * Storage helper functions for menu images
+ */
+export const MENU_IMAGES_BUCKET = 'food-images';
+
+/**
  * Database interface for menu items
  */
 interface DatabaseMenuItem {
@@ -133,11 +138,6 @@ export const fetchFeaturedMenuItems = async (): Promise<MenuItem[]> => {
     return [];
   }
 }
-export const MENU_IMAGES_BUCKET = 'food-images';
-
-/**
- * Get public URL for a menu image
- */
 export const getMenuImageUrl = (imagePath: string): string => {
   if (!imagePath) {
     return '/assets/images/veganpopcornchickentofurecipe-h1.jpg'; // Fallback image
