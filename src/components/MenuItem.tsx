@@ -153,31 +153,6 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, onAddToCart, compact =
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         
-        {/* Badges */}
-        <div className="absolute top-4 right-4 flex flex-col space-y-2">
-          {/* Spice Level */}
-          {item.spiceLevel && item.spiceLevel >= 2 && (
-            <div className="bg-red-500/90 backdrop-blur-sm text-white px-3 py-1 rounded-xl text-xs font-bold flex items-center space-x-1 shadow-lg">
-              <Flame size={12} />
-              <span>{item.spiceLevel}</span>
-            </div>
-          )}
-          
-          {/* Vegetarian */}
-          {item.tags?.includes('vegetarian') && (
-            <div className="bg-green-600/90 backdrop-blur-sm text-white px-3 py-1 rounded-xl text-xs font-medium shadow-lg flex items-center space-x-1">
-              <Leaf size={12} />
-              <span>Vegetarian</span>
-            </div>
-          )}
-          
-          {/* Premium */}
-          {item.tags?.includes('premium') && (
-            <div className="bg-amber-600/90 backdrop-blur-sm text-white px-3 py-1 rounded-xl text-xs font-medium shadow-lg">
-              ⭐ Premium
-            </div>
-          )}
-        </div>
       </div>
       
       {/* Content */}
@@ -196,13 +171,32 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, onAddToCart, compact =
         {/* Tags */}
         {item.tags && item.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
+            {/* Spice Level - Moved to content area */}
+            {item.spiceLevel && item.spiceLevel >= 2 && (
+              <span className="bg-red-50 text-red-700 text-xs px-3 py-1 rounded-full font-medium flex items-center space-x-1 border border-red-100">
+                <Flame size={10} />
+                <span>Spicy {item.spiceLevel}/5</span>
+              </span>
+            )}
+            
+            {/* Vegetarian Tag - Moved to content area */}
+            {item.tags?.includes('vegetarian') && (
+              <span className="bg-green-50 text-green-700 text-xs px-3 py-1 rounded-full font-medium flex items-center space-x-1 border border-green-100">
+                <Leaf size={10} />
+                <span>Vegetarian</span>
+              </span>
+            )}
+            
+            {/* Other Tags */}
             {item.tags.slice(0, 3).map(tag => (
+              tag !== 'vegetarian' && (
               <span 
                 key={tag} 
                 className="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full font-medium"
               >
                 {tag}
               </span>
+              )
             ))}
           </div>
         )}
