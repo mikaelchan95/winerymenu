@@ -148,23 +148,11 @@ export const getMenuImageUrl = (imagePath: string): string => {
     return imagePath;
   }
 
-  // Handle different path formats from manual uploads
-  let cleanPath = imagePath;
-  
-  // Remove bucket name if it's included in the path
-  if (cleanPath.startsWith('menu-images/')) {
-    cleanPath = cleanPath.substring('menu-images/'.length);
-  }
-  
-  // Remove leading slash if present
-  if (cleanPath.startsWith('/')) {
-    cleanPath = cleanPath.substring(1);
-  }
 
   // Get public URL from Supabase Storage
   const { data } = supabase.storage
     .from(MENU_IMAGES_BUCKET)
-    .getPublicUrl(cleanPath);
+    .getPublicUrl(imagePath);
 
   return data?.publicUrl || '/assets/images/veganpopcornchickentofurecipe-h1.jpg';
 };
