@@ -46,7 +46,7 @@ const transformMenuItem = (dbItem: DatabaseMenuItem): MenuItem => ({
   name: dbItem.name,
   description: dbItem.description || '',
   price: dbItem.price,
-  image: dbItem.image || '/assets/images/veganpopcornchickentofurecipe-h1.jpg',
+  image: getMenuImageUrl(dbItem.image),
   category: dbItem.category,
   subcategory: dbItem.subcategory || undefined,
   allergens: dbItem.allergens || undefined,
