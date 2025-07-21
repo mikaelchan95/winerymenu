@@ -130,7 +130,6 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, onAddToCart, compact =
           alt={item.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           onError={(e) => {
-            console.error('Image failed to load:', item.image);
             e.currentTarget.src = '/assets/images/veganpopcornchickentofurecipe-h1.jpg';
           }}
           onLoad={() => {
