@@ -41,7 +41,7 @@ const iconMap = {
   Coffee
 };
 
-type TabType = 'menu' | 'promotions' | 'orders' | 'profile';
+type TabType = 'menu' | 'promotions' | 'orders';
 
 function App() {
   // Initialize state from URL parameters or defaults
@@ -285,7 +285,6 @@ function App() {
     { id: 'menu' as TabType, label: 'Menu', icon: Home },
     { id: 'promotions' as TabType, label: 'Specials', icon: Star },
     { id: 'orders' as TabType, label: 'Orders', icon: Clock },
-    { id: 'profile' as TabType, label: 'Profile', icon: User },
   ];
 
   const isDrinkCategory = activeCategory === 'drinks';
@@ -303,15 +302,6 @@ function App() {
             onReorder={handleReorder}
             onDeleteOrder={handleDeleteOrder}
           />
-        );
-      
-      case 'profile':
-        return (
-          <div className="text-center py-20">
-            <User size={48} className="text-gray-300 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-gray-600 mb-2">Profile Settings</h2>
-            <p className="text-gray-500 text-sm">Manage your preferences and account</p>
-          </div>
         );
       
       default:
