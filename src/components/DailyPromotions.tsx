@@ -242,10 +242,6 @@ export const DailyPromotions: React.FC<DailyPromotionsProps> = ({ onAddToCart })
                 </div>
               </div>
 
-              <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Leaf size={24} className="text-gray-400" />
-              </div>
-
               {/* Expanded Pax Selector */}
               {isExpanded && promo.requiresPax && (
                 <div className={`border-t p-4 ${
@@ -318,10 +314,24 @@ export const DailyPromotions: React.FC<DailyPromotionsProps> = ({ onAddToCart })
 
       {/* Footer */}
       <div className="mt-8 pt-6 border-t border-gray-200">
-        <div className="text-center">
-          <div className="inline-flex items-center space-x-2 bg-gray-100 px-4 py-2 rounded-xl">
-            <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-            <span className="text-sm font-medium text-gray-700">All specials available</span>
+        <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-6 border border-gray-200">
+          <div className="text-center">
+            <h3 className="text-lg font-bold text-gray-900 mb-2">Ready to Order?</h3>
+            <p className="text-gray-600 text-sm mb-4">All specials are available now • Order directly from your table</p>
+            <div className="flex items-center justify-center space-x-6 text-sm">
+              <div className="flex items-center space-x-2 text-green-600">
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span className="font-medium">Available Now</span>
+              </div>
+              <div className="flex items-center space-x-2 text-blue-600">
+                <Clock size={14} />
+                <span className="font-medium">Fast Service</span>
+              </div>
+              <div className="flex items-center space-x-2 text-purple-600">
+                <Star size={14} />
+                <span className="font-medium">Chef's Special</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
