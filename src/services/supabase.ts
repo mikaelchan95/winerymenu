@@ -135,6 +135,40 @@ export const fetchFeaturedMenuItems = async (): Promise<MenuItem[]> => {
 };
 
 /**
+ * Get public URL for a menu image
+ */
+export const getMenuImageUrl = (imagePath: string): string => {
+  if (!imagePath) {
+    return '/assets/images/veganpopcornchickentofurecipe-h1.jpg'; // Fallback image
+  }
+
+  // If it's already a full URL, return as is
+  if (imagePath.startsWith('http') || imagePath.startsWith('/assets')) {
+    return imagePath;
+  }
+
+  // Handle different path formats from manual uploads
+  let cleanPath = imagePath;
+  
+  // Remove bucket name if it's included in the path
+  if (cleanPath.startsWith('menu-images/')) {
+    cleanPath = cleanPath.substring('menu-images/'.length);
+  }
+  
+  // Remove leading slash if present
+  if (cleanPath.startsWith('/')) {
+    cleanPath = cleanPath.substring(1);
+  }
+
+  // Get public URL from Supabase Storage
+  const { data } = supabase.storage
+    .from(MENU_IMAGES_BUCKET)
+    .getPublicUrl(cleanPath);
+
+  return data?.publicUrl || '/assets/images/veganpopcornchickentofurecipe-h1.jpg';
+};
+
+/**
  * Real-time subscription to menu items changes
  */
 export const subscribeToMenuItems = (callback: (items: MenuItem[]) => void) => {
