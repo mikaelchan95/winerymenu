@@ -327,13 +327,12 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose, onA
             ))}
           </div>
         </div>
-        </div>
-      </div>
 
+      </div>
       {/* Sticky Add to Cart */}
       <div className="sticky bottom-0 bg-white border-t border-gray-200 shadow-lg">
         <div className="p-6 pb-safe-area">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-6">
             <div className="flex items-center space-x-2">
               <span className="text-gray-700 font-medium">Qty</span>
@@ -380,6 +379,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose, onA
               <span>Add to Cart</span>
             )}
           </button>
+          </div>
         </div>
       </div>
     </div>
