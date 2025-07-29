@@ -105,7 +105,6 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, onAddToCart, compact =
               </>
             ) : (
               <>
-                <ShoppingCart size={16} />
                 <span>${(item.price * quantity).toFixed(2)}</span>
                 {quantity > 1 && (
                   <span className="bg-white/20 text-white text-xs px-1.5 py-0.5 rounded">
@@ -207,8 +206,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, onAddToCart, compact =
               </>
             ) : (
               <>
-                <ShoppingCart size={20} />
-                <span>Add ${(item.price * quantity).toFixed(2)}</span>
+                <span>${(item.price * quantity).toFixed(2)}</span>
                 {quantity > 1 && (
                   <span className="bg-white/20 text-white text-sm px-2 py-1 rounded-lg">
                     ×{quantity}
