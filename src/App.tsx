@@ -206,6 +206,7 @@ function App() {
   }, []);
 
   const handleRemoveItem = useCallback((id: string) => {
+                  onViewDetails={setSelectedItem}
     setCartItems(prev => prev.filter(item => item.id !== id));
   }, []);
 

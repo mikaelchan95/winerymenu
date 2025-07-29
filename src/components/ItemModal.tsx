@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MenuItem, Customization, CartItem } from '../types';
-import { X, Plus, Minus, Check, AlertCircle } from 'lucide-react';
+import { X, Plus, Minus, Check, AlertCircle, Leaf, Flame, Clock, Award, Info } from 'lucide-react';
 
 interface ItemModalProps {
   item: MenuItem;
@@ -93,6 +93,31 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose, onA
 
   const totalPrice = calculateTotalPrice();
 
+  // Mock ingredient data - in production this would come from the database
+  const getIngredients = (item: MenuItem): string[] => {
+    const ingredientMap: { [key: string]: string[] } = {
+      'starters-2': ['Jamón ibérico shoulder', 'Sea salt', 'Black pepper'],
+      'mains-3': ['Australian lamb rack', 'Baby potatoes', 'Spinach', 'Guinness', 'Piquillo peppers'],
+      'mains-6': ['Galician grass-fed beef', 'Sea salt', 'Black pepper', 'Garlic', 'Rosemary'],
+      'paellas-1': ['Bomba rice', 'Tiger prawns', 'Mussels', 'Squid', 'Saffron', 'Soffritto', 'Sambuca Vaccari'],
+      'tapas-1': ['Padrón peppers', 'Sea salt', 'Togarashi'],
+      'tapas-5': ['Agria potatoes', 'Tomato sauce', 'Mayonnaise', 'Togarashi', 'Paprika'],
+    };
+    return ingredientMap[item.id] || ['Premium ingredients', 'Chef\'s selection'];
+  };
+
+  // Get dietary information
+  const getDietaryInfo = (item: MenuItem) => {
+    const info = [];
+    
+    if (item.tags?.includes('vegetarian')) info.push({ label: 'Vegetarian', icon: Leaf, color: 'text-green-600', bg: 'bg-green-100' });
+    if (item.tags?.includes('vegan')) info.push({ label: 'Vegan', icon: Leaf, color: 'text-green-600', bg: 'bg-green-100' });
+    if (item.tags?.includes('premium')) info.push({ label: 'Premium', icon: Award, color: 'text-purple-600', bg: 'bg-purple-100' });
+    if (item.spiceLevel && item.spiceLevel > 0) info.push({ label: `Spicy Level ${item.spiceLevel}`, icon: Flame, color: 'text-red-600', bg: 'bg-red-100' });
+    
+    return info;
+  };
+
   return (
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in duration-200 safe-area-all">
       <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-auto animate-in zoom-in duration-300 shadow-2xl mt-safe-area mb-safe-area">
@@ -112,23 +137,17 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose, onA
             <X size={20} />
           </button>
           
-          {/* Floating badges */}
-          <div className="absolute bottom-4 left-4 flex space-x-2">
-            {item.spiceLevel && (
-              <div className="bg-black/80 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg flex items-center space-x-1">
-                <span>Spice Level:</span>
-                <div className="flex items-center space-x-0.5">
-                  {Array.from({ length: item.spiceLevel }, (_, i) => (
-                    <Flame key={i} size={12} className="text-orange-400" />
-                  ))}
+          {/* Dietary badges */}
+          <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
+            {getDietaryInfo(item).map((info, index) => {
+              const IconComponent = info.icon;
+              return (
+                <div key={index} className="bg-black/80 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg flex items-center space-x-1">
+                  <IconComponent size={12} />
+                  <span>{info.label}</span>
                 </div>
-              </div>
-            )}
-            {item.tags?.includes('vegetarian') && (
-              <div className="bg-green-600/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg">
-                Vegetarian
-              </div>
-            )}
+              );
+            })}
           </div>
         </div>
         
@@ -142,13 +161,65 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose, onA
           
           <p className="text-gray-600 mb-6 leading-relaxed">{item.description}</p>
           
+          {/* Ingredients Section */}
+          <div className="mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
+            <div className="flex items-center space-x-2 mb-3">
+              <Info size={18} className="text-gray-600" />
+              <h4 className="font-semibold text-gray-900">Key Ingredients</h4>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {getIngredients(item).map((ingredient, index) => (
+                <span 
+                  key={index}
+                  className="bg-white text-gray-700 text-sm px-3 py-1 rounded-full border border-gray-200 font-medium"
+                >
+                  {ingredient}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Dietary Information */}
+          {getDietaryInfo(item).length > 0 && (
+            <div className="mb-6 p-4 bg-blue-50 rounded-xl border border-blue-100">
+              <h4 className="font-semibold text-blue-900 mb-3">Dietary Information</h4>
+              <div className="flex flex-wrap gap-2">
+                {getDietaryInfo(item).map((info, index) => {
+                  const IconComponent = info.icon;
+                  return (
+                    <span 
+                      key={index}
+                      className={`${info.bg} ${info.color} text-sm px-3 py-1 rounded-full font-medium flex items-center space-x-1`}
+                    >
+                      <IconComponent size={12} />
+                      <span>{info.label}</span>
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Allergens Warning */}
           {item.allergens && item.allergens.length > 0 && (
             <div className="flex items-start space-x-3 p-4 bg-amber-50 rounded-xl border border-amber-200 mb-6 shadow-sm">
               <AlertCircle size={20} className="text-amber-600 flex-shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-semibold text-amber-800 mb-1">Allergen Information</h4>
-                <p className="text-amber-700 text-sm">Contains: {item.allergens.join(', ')}</p>
+                <h4 className="font-semibold text-amber-800 mb-2">⚠️ Allergen Warning</h4>
+                <p className="text-amber-700 text-sm mb-2">This dish contains:</p>
+                <div className="flex flex-wrap gap-1">
+                  {item.allergens.map((allergen, index) => (
+                    <span 
+                      key={index}
+                      className="bg-amber-200 text-amber-800 text-xs px-2 py-1 rounded-full font-medium uppercase"
+                    >
+                      {allergen}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-amber-600 text-xs mt-2 font-medium">
+                  Please inform our staff if you have any allergies or dietary requirements.
+                </p>
               </div>
             </div>
           )}
