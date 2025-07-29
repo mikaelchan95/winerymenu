@@ -384,38 +384,6 @@ function App() {
                   </span>
                 )}
               </div>
-
-              {/* View Toggle */}
-              {isFoodCategory && (
-                <div className="flex items-center space-x-2 bg-gray-100 rounded-xl p-1">
-                  <button
-                    onClick={() => setIsCompactView(false)}
-                    className={`
-                      flex items-center space-x-2 px-3 py-2 rounded-lg font-medium transition-all duration-150 text-sm
-                      ${!isCompactView 
-                        ? 'bg-white text-gray-900 shadow-sm' 
-                        : 'text-gray-600 hover:text-gray-900'
-                      }
-                    `}
-                  >
-                    <LayoutGrid size={16} />
-                    <span>Cards</span>
-                  </button>
-                  <button
-                    onClick={() => setIsCompactView(true)}
-                    className={`
-                      flex items-center space-x-2 px-3 py-2 rounded-lg font-medium transition-all duration-150 text-sm
-                      ${isCompactView 
-                        ? 'bg-white text-gray-900 shadow-sm' 
-                        : 'text-gray-600 hover:text-gray-900'
-                      }
-                    `}
-                  >
-                    <List size={16} />
-                    <span>Compact</span>
-                  </button>
-                </div>
-              )}
             </div>
 
             {/* Show tapas items for free ordering during active session */}
