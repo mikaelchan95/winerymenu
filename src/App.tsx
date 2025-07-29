@@ -59,7 +59,6 @@ function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [vegetarianOnly, setVegetarianOnly] = useState(false);
   const [isWaiterCodeModalOpen, setIsWaiterCodeModalOpen] = useState(false);
-  const [isCompactView, setIsCompactView] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [orderConfirmation, setOrderConfirmation] = useState<{
     orderNumber: string;
