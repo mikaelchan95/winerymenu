@@ -5,10 +5,10 @@ import { Plus, Minus, AlertCircle, Flame, Check, ShoppingCart, Leaf } from 'luci
 interface MenuItemProps {
   item: MenuItemType;
   onAddToCart: (item: MenuItemType, quantity: number) => void;
-  compact?: boolean;
+  onItemClick?: (item: MenuItemType) => void;
 }
 
-export const MenuItem: React.FC<MenuItemProps> = ({ item, onAddToCart, compact = false }) => {
+export const MenuItem: React.FC<MenuItemProps> = ({ item, onAddToCart, onItemClick }) => {
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -45,8 +45,18 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, onAddToCart, compact =
     setImageLoaded(true);
   };
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Prevent card click when interacting with quantity controls or add button
+    if (e.target === e.currentTarget || (e.target as HTMLElement).closest('.card-content')) {
+      onItemClick?.(item);
+    }
+  };
+
   return (
-    <div className="group bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full will-change-transform">
+    <div 
+      className="group bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full will-change-transform cursor-pointer"
+      onClick={handleCardClick}
+    >
       {/* Image */}
       <div className="relative overflow-hidden h-48">
         {/* Loading placeholder */}
@@ -83,19 +93,64 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, onAddToCart, compact =
       </div>
       
       {/* Content */}
-      <div className="p-6 flex flex-col flex-1">
+      <div className="p-6 flex flex-col flex-1 card-content">
         {/* Header */}
         <div className="flex justify-between items-start mb-3">
           <h3 className="text-xl font-bold text-gray-900 line-clamp-2 flex-1 leading-tight">
             {item.name}
           </h3>
+          <div className="text-xl font-bold text-gray-900 ml-3">
+            ${item.price.toFixed(2)}
+          </div>
+        </div>
+
+        {/* Dietary Labels & Quick Info */}
+        <div className="flex flex-wrap gap-1 mb-3">
+          {item.dietaryLabels?.slice(0, 2).map(label => (
+            <span 
+              key={label} 
+              className={`
+                text-xs px-2 py-1 rounded-full font-medium
+                ${label === 'vegan' ? 'bg-green-100 text-green-700' :
+                  label === 'vegetarian' ? 'bg-green-100 text-green-600' :
+                  label === 'halal available' ? 'bg-blue-100 text-blue-700' :
+                  label === 'gluten-free' ? 'bg-yellow-100 text-yellow-700' :
+                  'bg-gray-100 text-gray-600'
+                }
+              `}
+            >
+              {label}
+            </span>
+          ))}
+          {item.preparationTime && (
+            <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600 flex items-center">
+              <Clock size={10} className="mr-1" />
+              {item.preparationTime}min
+            </span>
+          )}
         </div>
         
         {/* Description */}
         <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-1 leading-relaxed">{item.description}</p>
         
+        {/* Allergen Warning */}
+        {item.allergens && item.allergens.length > 0 && (
+          <div className="flex items-center space-x-1 mb-4 p-2 bg-yellow-50 rounded-lg">
+            <AlertCircle size={14} className="text-yellow-600 flex-shrink-0" />
+            <span className="text-xs text-yellow-700">
+              Contains: {item.allergens.slice(0, 2).join(', ')}
+              {item.allergens.length > 2 && ` +${item.allergens.length - 2} more`}
+            </span>
+          </div>
+        )}
+
+        {/* Click hint */}
+        <div className="text-xs text-gray-400 mb-4 flex items-center">
+          <span>Tap for ingredients & options</span>
+        </div>
+
         {/* Quantity & Add Section */}
-        <div className="mt-auto">
+        <div className="mt-auto" onClick={(e) => e.stopPropagation()}>
           {/* Quantity Controls */}
           <div className="flex items-center justify-center mb-4">
             <div className="flex items-center space-x-3 bg-gray-50 rounded-2xl p-2" role="group" aria-label="Quantity controls">

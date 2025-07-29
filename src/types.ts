@@ -6,11 +6,15 @@ export interface MenuItem {
   image?: string;
   category: string;
   subcategory?: string;
-  customizations?: Customization[];
   allergens?: string[];
   spiceLevel?: number;
   tags?: string[];
   featured?: boolean;
+  ingredients?: string[];
+  dietaryLabels?: string[];
+  customizations?: Customization[];
+  preparationTime?: number;
+  servingSize?: string;
 }
 
 export interface Customization {

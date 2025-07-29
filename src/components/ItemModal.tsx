@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MenuItem, Customization, CartItem } from '../types';
-import { X, Plus, Minus, Check, AlertCircle } from 'lucide-react';
+import { X, Plus, Minus, Check, AlertCircle, Clock, Users, Leaf, Shield, ChefHat } from 'lucide-react';
 
 interface ItemModalProps {
   item: MenuItem;
@@ -95,7 +95,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose, onA
 
   return (
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in duration-200 safe-area-all">
-      <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-auto animate-in zoom-in duration-300 shadow-2xl mt-safe-area mb-safe-area">
+      <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-auto animate-in zoom-in duration-300 shadow-2xl mt-safe-area mb-safe-area">
         {/* Header Image */}
         <div className="relative h-64">
           <img 
@@ -114,6 +114,12 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose, onA
           
           {/* Floating badges */}
           <div className="absolute bottom-4 left-4 flex space-x-2">
+            {item.preparationTime && (
+              <div className="bg-black/80 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg flex items-center space-x-1">
+                <Clock size={12} />
+                <span>{item.preparationTime} min</span>
+              </div>
+            )}
             {item.spiceLevel && (
               <div className="bg-black/80 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg flex items-center space-x-1">
                 <span>Spice Level:</span>
@@ -124,9 +130,19 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose, onA
                 </div>
               </div>
             )}
-            {item.tags?.includes('vegetarian') && (
+            {item.dietaryLabels?.includes('vegetarian') && (
               <div className="bg-green-600/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg">
                 Vegetarian
+              </div>
+            )}
+            {item.dietaryLabels?.includes('vegan') && (
+              <div className="bg-green-700/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg">
+                Vegan
+              </div>
+            )}
+            {item.dietaryLabels?.includes('halal available') && (
+              <div className="bg-blue-600/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg">
+                Halal Available
               </div>
             )}
           </div>
@@ -142,14 +158,97 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose, onA
           
           <p className="text-gray-600 mb-6 leading-relaxed">{item.description}</p>
           
+          {/* Serving Size & Prep Time */}
+          {(item.servingSize || item.preparationTime) && (
+            <div className="flex items-center space-x-6 mb-6 p-4 bg-gray-50 rounded-xl">
+              {item.servingSize && (
+                <div className="flex items-center space-x-2">
+                  <Users size={16} className="text-gray-500" />
+                  <span className="text-sm text-gray-700">{item.servingSize}</span>
+                </div>
+              )}
+              {item.preparationTime && (
+                <div className="flex items-center space-x-2">
+                  <Clock size={16} className="text-gray-500" />
+                  <span className="text-sm text-gray-700">{item.preparationTime} minutes</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Ingredients Section */}
+          {item.ingredients && item.ingredients.length > 0 && (
+            <div className="mb-6">
+              <div className="flex items-center space-x-2 mb-3">
+                <ChefHat size={18} className="text-gray-600" />
+                <h3 className="text-lg font-bold text-gray-900">Ingredients</h3>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-4">
+                <div className="flex flex-wrap gap-2">
+                  {item.ingredients.map((ingredient, index) => (
+                    <span 
+                      key={index}
+                      className="bg-white text-gray-700 px-3 py-1 rounded-lg text-sm border border-gray-200"
+                    >
+                      {ingredient}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Dietary Information */}
+          {item.dietaryLabels && item.dietaryLabels.length > 0 && (
+            <div className="mb-6">
+              <div className="flex items-center space-x-2 mb-3">
+                <Leaf size={18} className="text-green-600" />
+                <h3 className="text-lg font-bold text-gray-900">Dietary Information</h3>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {item.dietaryLabels.map((label, index) => (
+                  <span 
+                    key={index}
+                    className={`
+                      px-3 py-2 rounded-lg text-sm font-medium
+                      ${label === 'vegan' ? 'bg-green-100 text-green-800 border border-green-200' :
+                        label === 'vegetarian' ? 'bg-green-100 text-green-700 border border-green-200' :
+                        label === 'halal available' ? 'bg-blue-100 text-blue-800 border border-blue-200' :
+                        label === 'gluten-free' ? 'bg-yellow-100 text-yellow-800 border border-yellow-200' :
+                        'bg-gray-100 text-gray-700 border border-gray-200'
+                      }
+                    `}
+                  >
+                    {label.charAt(0).toUpperCase() + label.slice(1)}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Allergens Warning */}
           {item.allergens && item.allergens.length > 0 && (
-            <div className="flex items-start space-x-3 p-4 bg-amber-50 rounded-xl border border-amber-200 mb-6 shadow-sm">
+            <div className="mb-6">
+              <div className="flex items-center space-x-2 mb-3">
+                <Shield size={18} className="text-amber-600" />
+                <h3 className="text-lg font-bold text-gray-900">Allergen Information</h3>
+              </div>
+              <div className="flex items-start space-x-3 p-4 bg-amber-50 rounded-xl border border-amber-200 shadow-sm">
               <AlertCircle size={20} className="text-amber-600 flex-shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-semibold text-amber-800 mb-1">Allergen Information</h4>
-                <p className="text-amber-700 text-sm">Contains: {item.allergens.join(', ')}</p>
+                <p className="text-amber-800 font-medium mb-1">Contains or may contain:</p>
+                <div className="flex flex-wrap gap-1">
+                  {item.allergens.map((allergen, index) => (
+                    <span 
+                      key={index}
+                      className="bg-amber-200 text-amber-800 px-2 py-1 rounded text-xs font-medium"
+                    >
+                      {allergen}
+                    </span>
+                  ))}
+                </div>
               </div>
+            </div>
             </div>
           )}
           

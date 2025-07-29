@@ -34,6 +34,11 @@ interface DatabaseMenuItem {
   featured: boolean | null;
   available: boolean;
   sort_order: number;
+  ingredients: string[] | null;
+  dietary_labels: string[] | null;
+  customizations: any[] | null;
+  preparation_time: number | null;
+  serving_size: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -53,6 +58,11 @@ const transformMenuItem = (dbItem: DatabaseMenuItem): MenuItem => ({
   tags: dbItem.tags || undefined,
   spiceLevel: dbItem.spice_level || undefined,
   featured: dbItem.featured || false,
+  ingredients: dbItem.ingredients || undefined,
+  dietaryLabels: dbItem.dietary_labels || undefined,
+  customizations: dbItem.customizations || undefined,
+  preparationTime: dbItem.preparation_time || 15,
+  servingSize: dbItem.serving_size || undefined,
 });
 
 /**
