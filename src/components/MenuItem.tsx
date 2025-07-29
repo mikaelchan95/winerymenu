@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MenuItem as MenuItemType } from '../types';
-import { Plus, Minus, AlertCircle, Flame, Check, ShoppingCart, Leaf } from 'lucide-react';
+import { Plus, Minus, AlertCircle, Flame, Check, ShoppingCart, Leaf, Clock } from 'lucide-react';
 
 interface MenuItemProps {
   item: MenuItemType;
