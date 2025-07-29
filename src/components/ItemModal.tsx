@@ -13,36 +13,48 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose, onA
   const [quantity, setQuantity] = useState(1);
   const [customizations, setCustomizations] = useState<{ [key: string]: string[] }>({});
   const [isAdding, setIsAdding] = useState(false);
-
-  if (!isOpen) return null;
-
+  
+  // Prevent scroll on state changes
   const handleCustomizationChange = (customizationId: string, optionId: string, maxSelections?: number) => {
+    // Store current scroll position
+    const scrollPosition = window.scrollY;
+    
     setCustomizations(prev => {
       const current = prev[customizationId] || [];
       const isSelected = current.includes(optionId);
       
+      let newCustomizations;
       if (isSelected) {
-        return {
+        newCustomizations = {
           ...prev,
           [customizationId]: current.filter(id => id !== optionId)
         };
       } else {
         if (maxSelections === 1) {
-          return {
+          newCustomizations = {
             ...prev,
             [customizationId]: [optionId]
           };
         } else if (maxSelections && current.length >= maxSelections) {
           return prev;
         } else {
-          return {
+          newCustomizations = {
             ...prev,
             [customizationId]: [...current, optionId]
           };
         }
       }
+      
+      // Restore scroll position after state update
+      requestAnimationFrame(() => {
+        window.scrollTo(0, scrollPosition);
+      });
+      
+      return newCustomizations;
     });
   };
+
+  if (!isOpen) return null;
 
   const calculateTotalPrice = () => {
     let total = item.price * quantity;
@@ -94,7 +106,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose, onA
   const totalPrice = calculateTotalPrice();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50" style={{ scrollBehavior: 'auto' }}>
       {/* Header */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-20">
         <div className="flex items-center px-6 py-4 pt-safe-area">
@@ -289,6 +301,12 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose, onA
                               : 'border-gray-100 bg-gray-50 cursor-not-allowed opacity-50'
                           }
                         `}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (canSelect) {
+                            handleCustomizationChange(customization.id, option.id, customization.maxSelections);
+                          }
+                        }}
                       >
                         <div className="flex items-center space-x-3">
                           <div className={`
@@ -315,7 +333,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose, onA
                           type={customization.maxSelections === 1 ? "radio" : "checkbox"}
                           name={customization.maxSelections === 1 ? customization.id : undefined}
                           checked={isSelected}
-                          onChange={() => handleCustomizationChange(customization.id, option.id, customization.maxSelections)}
+                          onChange={() => {}} // Handled by label click
                           disabled={!canSelect}
                           className="sr-only"
                         />
