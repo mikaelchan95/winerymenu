@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MenuItem, Customization, CartItem } from '../types';
-import { X, Plus, Minus, Check, AlertCircle, Clock, Users, Leaf, Shield, ChefHat } from 'lucide-react';
+import { X, Plus, Minus, Check, AlertCircle, Clock, Users, Leaf, Shield, ChefHat, Flame } from 'lucide-react';
 
 interface ItemModalProps {
   item: MenuItem;
