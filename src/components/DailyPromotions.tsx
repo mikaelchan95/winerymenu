@@ -81,7 +81,6 @@ const getTodayPromotion = () => {
 export const DailyPromotions: React.FC<DailyPromotionsProps> = ({ onAddToCart }) => {
   const [isTapasNightOpen, setIsTapasNightOpen] = useState(false);
   const [tapasNightPax, setTapasNightPax] = useState(2);
-  const [expandedCard, setExpandedCard] = useState<string | null>(null);
   const todayPromotion = getTodayPromotion();
 
   const handlePromotionClick = (promo: typeof promotions[0]) => {
@@ -105,191 +104,155 @@ export const DailyPromotions: React.FC<DailyPromotionsProps> = ({ onAddToCart })
     }
   };
 
-  const adjustPax = (increment: boolean) => {
-    setTapasNightPax(prev => {
-      const newPax = increment ? prev + 1 : prev - 1;
-      return Math.max(1, Math.min(newPax, 12));
-    });
-  };
-
   return (
-    <div className="pb-8">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center space-x-3 mb-4">
-          <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center">
-            <Star size={20} className="text-white" />
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900">Daily Specials</h1>
-        </div>
+    <div className="max-w-4xl mx-auto">
+      {/* Simple Header */}
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Daily Specials</h1>
+        <p className="text-gray-500">Today is {todayPromotion}</p>
       </div>
 
-      {/* Wine Buffet - Compact Hero */}
-      <div className="bg-black rounded-2xl p-6 mb-8 text-white">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <Wine size={24} />
-            <div>
-              <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-              <p className="text-sm text-gray-300">Free-flow • 4:30-7PM</p>
+      {/* Today's Special - Hero */}
+      {promotions.filter(p => p.day === todayPromotion).map((todaySpecial) => {
+        const IconComponent = todaySpecial.icon;
+        const hasDiscount = todaySpecial.originalPrice && todaySpecial.price;
+        
+        return (
+          <div key={todaySpecial.day} className="bg-black text-white rounded-3xl p-8 mb-8 text-center relative overflow-hidden">
+            <div className="relative z-10">
+              <div className="inline-flex items-center bg-white/20 rounded-full px-4 py-2 mb-4">
+                <Star size={16} className="mr-2" />
+                <span className="text-sm font-semibold">TODAY'S SPECIAL</span>
+              </div>
+              
+              <h2 className="text-4xl font-bold mb-2">{todaySpecial.title}</h2>
+              <p className="text-white/80 mb-6 text-lg">{todaySpecial.description}</p>
+              
+              <div className="flex items-center justify-center space-x-4 mb-6">
+                <Clock size={20} className="text-white/60" />
+                <span className="text-white/80">{todaySpecial.time}</span>
+              </div>
+              
+              <div className="flex items-center justify-center space-x-3 mb-6">
+                {hasDiscount && (
+                  <span className="text-2xl text-white/60 line-through">${todaySpecial.originalPrice}</span>
+                )}
+                {todaySpecial.price ? (
+                  <span className="text-5xl font-bold">${todaySpecial.price}</span>
+                ) : (
+                  <span className="text-5xl font-bold text-green-400">FREE</span>
+                )}
+              </div>
+              
+              {todaySpecial.requiresPax ? (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-center space-x-4">
+                    <button
+                      onClick={() => setTapasNightPax(Math.max(1, tapasNightPax - 1))}
+                      className="w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
+                    >
+                      <Minus size={20} />
+                    </button>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold">{tapasNightPax}</div>
+                      <div className="text-sm text-white/60">people</div>
+                    </div>
+                    <button
+                      onClick={() => setTapasNightPax(Math.min(12, tapasNightPax + 1))}
+                      className="w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
+                    >
+                      <Plus size={20} />
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => handlePromotionClick(todaySpecial)}
+                    className="bg-white text-black px-8 py-4 rounded-2xl font-bold text-lg hover:bg-gray-100 transition-colors"
+                  >
+                    Select Dishes • ${(todaySpecial.price || 0) * tapasNightPax}
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => handlePromotionClick(todaySpecial)}
+                  className="bg-white text-black px-8 py-4 rounded-2xl font-bold text-lg hover:bg-gray-100 transition-colors"
+                >
+                  Order Now
+                </button>
+              )}
+            </div>
+            
+            {/* Background decoration */}
+            <div className="absolute inset-0 opacity-10">
+              <IconComponent size={200} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
             </div>
           </div>
-          <div className="text-right">
-            <div className="text-xl font-bold">$38</div>
-            <div className="text-xs text-gray-400">per person</div>
-          </div>
-        </div>
-      </div>
+        );
+      })}
 
-      {/* Compact Specials Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {promotions.map((promo) => {
+      {/* Other Days - Simple Grid */}
+      <div className="mb-6">
+        <h3 className="text-xl font-semibold text-gray-900 mb-4">Other Days</h3>
+      </div>
+      
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        {promotions.filter(p => p.day !== todayPromotion).map((promo) => {
           const IconComponent = promo.icon;
-          const isToday = promo.day === todayPromotion;
-          const isExpanded = expandedCard === promo.day;
           const hasDiscount = promo.originalPrice && promo.price;
           
           return (
-            <div key={promo.day} className="space-y-4">
-              {/* Main Promo Box */}
-              <div
-                className={`relative rounded-2xl border-2 transition-all duration-200 cursor-pointer group aspect-video bg-gradient-to-br ${
-                  isToday 
-                    ? 'from-black to-gray-800 text-white border-black' 
-                    : 'from-gray-100 to-gray-200 border-gray-200 hover:border-gray-300'
-                }`}
-                onClick={() => {
-                  if (promo.requiresPax) {
-                    setExpandedCard(isExpanded ? null : promo.day);
-                  } else {
-                    handlePromotionClick(promo);
-                  }
-                }}
-              >
-                {/* Clean Image Placeholder */}
-                <div className="absolute inset-0 rounded-2xl bg-gray-100 flex items-center justify-center">
-                  <IconComponent size={32} className="text-gray-400" />
-                </div>
+            <div
+              key={promo.day}
+              className="bg-white border-2 border-gray-100 rounded-2xl p-6 hover:border-gray-200 transition-all duration-200 cursor-pointer group"
+              onClick={() => handlePromotionClick(promo)}
+            >
+              {/* Day Badge */}
+              <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+                {promo.day}
               </div>
-
-              {/* Details Below Box */}
-              <div className="space-y-3">
-                {/* Day and Title */}
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-                      {promo.day}
-                    </span>
-                    {isToday && (
-                      <span className="bg-black text-white px-2 py-1 rounded text-xs font-bold">
-                        TODAY
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="font-bold text-lg text-gray-900">{promo.title}</h3>
-                </div>
-
-                {/* Price and Discount */}
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">{promo.time}</span>
-                  <div className="flex items-center space-x-2">
-                    {hasDiscount && (
-                      <span className="text-sm text-red-600 line-through">${promo.originalPrice}</span>
-                    )}
-                    {promo.price ? (
-                      <span className="text-lg font-bold text-gray-900">${promo.price}</span>
-                    ) : (
-                      <span className="text-lg font-bold text-green-600">FREE</span>
-                    )}
-                  </div>
-                </div>
-                
-                {/* Simple Description */}
-                <p className="text-sm text-gray-600">
-                  {promo.description}
-                </p>
-
-                {/* Action Button */}
-                {promo.requiresPax ? (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setExpandedCard(isExpanded ? null : promo.day);
-                    }}
-                    className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                  >
-                    {isExpanded ? 'Close' : 'Select People'}
-                  </button>
+              
+              {/* Icon */}
+              <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-gray-200 transition-colors">
+                <IconComponent size={24} className="text-gray-600" />
+              </div>
+              
+              {/* Title */}
+              <h4 className="font-bold text-gray-900 mb-2 text-lg">{promo.title}</h4>
+              
+              {/* Price */}
+              <div className="flex items-center space-x-2 mb-3">
+                {hasDiscount && (
+                  <span className="text-sm text-gray-400 line-through">${promo.originalPrice}</span>
+                )}
+                {promo.price ? (
+                  <span className="text-2xl font-bold text-gray-900">${promo.price}</span>
                 ) : (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handlePromotionClick(promo);
-                    }}
-                    className="w-full bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                  >
-                    Order Now
-                  </button>
+                  <span className="text-2xl font-bold text-green-600">FREE</span>
                 )}
               </div>
-
-              {/* Expanded Pax Selector */}
-              {isExpanded && promo.requiresPax && (
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-sm font-medium text-gray-900">
-                      People:
-                    </span>
-                    <div className="flex items-center space-x-3">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          adjustPax(false);
-                        }}
-                        disabled={tapasNightPax <= 1}
-                        className="w-8 h-8 bg-white hover:bg-gray-100 text-gray-600 disabled:opacity-50 rounded-lg flex items-center justify-center border border-gray-200"
-                      >
-                        <Minus size={14} />
-                      </button>
-                      
-                      <span className="font-bold min-w-[2rem] text-center text-gray-900">
-                        {tapasNightPax}
-                      </span>
-                      
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          adjustPax(true);
-                        }}
-                        disabled={tapasNightPax >= 12}
-                        className="w-8 h-8 bg-white hover:bg-gray-100 text-gray-600 disabled:opacity-50 rounded-lg flex items-center justify-center border border-gray-200"
-                      >
-                        <Plus size={14} />
-                      </button>
-                    </div>
-                  </div>
-                  
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handlePromotionClick(promo);
-                    }}
-                    className="w-full bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-lg text-sm font-medium"
-                  >
-                    ${(promo.price || 0) * tapasNightPax}
-                  </button>
-                </div>
-              )}
+              
+              {/* Time */}
+              <div className="text-sm text-gray-500 mb-4">{promo.time}</div>
+              
+              {/* Description */}
+              <p className="text-sm text-gray-600 mb-4 line-clamp-2">{promo.description}</p>
+              
+              {/* Simple CTA */}
+              <div className="text-sm font-medium text-gray-400 group-hover:text-gray-600 transition-colors">
+                Tap to order →
+              </div>
             </div>
           );
         })}
       </div>
 
-      {/* Footer */}
-      <div className="mt-8 pt-6 border-t border-gray-200">
-        <div className="text-center">
-          <p className="text-sm text-gray-500">All specials available now</p>
+      {/* Wine Buffet - Bottom Banner */}
+      <div className="mt-8 bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl p-6 text-white text-center">
+        <div className="flex items-center justify-center space-x-3 mb-2">
+          <Wine size={24} />
+          <h3 className="text-xl font-bold">Wine Buffet</h3>
         </div>
+        <p className="text-purple-100 mb-4">Free-flow wine selection • Daily 4:30-7:00 PM</p>
+        <div className="text-2xl font-bold">$38 per person</div>
       </div>
 
       {/* Tapas Night Menu Modal */}
