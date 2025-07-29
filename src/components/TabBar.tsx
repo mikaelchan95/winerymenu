@@ -1,7 +1,7 @@
 import React from 'react';
 import { Home, Star, Clock, User } from 'lucide-react';
 
-type TabType = 'menu' | 'promotions' | 'orders' | 'profile';
+type TabType = 'menu' | 'orders';</action>
 
 interface TabBarProps {
   activeTab: TabType;
@@ -10,9 +10,7 @@ interface TabBarProps {
 
 const tabs = [
   { id: 'menu' as TabType, label: 'Menu', icon: Home },
-  { id: 'promotions' as TabType, label: 'Specials', icon: Star },
   { id: 'orders' as TabType, label: 'Orders', icon: Clock },
-  { id: 'profile' as TabType, label: 'Profile', icon: User },
 ];
 
 export const TabBar: React.FC<TabBarProps> = ({ activeTab, onTabChange }) => {

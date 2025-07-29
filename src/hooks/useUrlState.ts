@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { categories, drinkCategories } from '../data/categories';
 
-type TabType = 'menu' | 'promotions' | 'orders';
+type TabType = 'menu' | 'orders';</action>
 
 interface UrlState {
   activeTab: TabType;
@@ -25,7 +25,7 @@ export const useUrlState = (): UrlState => {
     const drinkCategory = params.get('drinkCategory') || drinkCategories[0].id;
 
     // Validate tab exists
-    const validTabs: TabType[] = ['menu', 'promotions', 'orders'];
+    const validTabs: TabType[] = ['menu', 'orders'];
     const validTab = validTabs.includes(tab) ? tab : 'menu';
 
     // Validate category exists

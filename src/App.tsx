@@ -8,7 +8,6 @@ import { ItemModal } from './components/ItemModal';
 import { Cart } from './components/Cart';
 import { OrderConfirmation } from './components/OrderConfirmation';
 import { WaiterCodeInputModal } from './components/WaiterCodeInputModal';
-import { DailyPromotions } from './components/DailyPromotions';
 import { OrderHistory } from './components/OrderHistory';
 import { TapasNightTimer } from './components/TapasNightTimer';
 import { categories, drinkCategories } from './data/categories';
@@ -42,7 +41,7 @@ const iconMap = {
   Coffee
 };
 
-type TabType = 'menu' | 'promotions' | 'orders';
+type TabType = 'menu' | 'orders';</action>
 
 function App() {
   // Initialize state from URL parameters or defaults
@@ -115,9 +114,7 @@ function App() {
     } else {
       const tabNames: Record<TabType, string> = {
         menu: 'Menu',
-        promotions: 'Daily Specials',
         orders: 'Order History',
-        profile: 'Profile'
       };
       document.title = `${tabNames[tab]} - ${baseTitle}`;
     }
@@ -287,7 +284,6 @@ function App() {
 
   const tabs = [
     { id: 'menu' as TabType, label: 'Menu', icon: Home },
-    { id: 'promotions' as TabType, label: 'Specials', icon: Star },
     { id: 'orders' as TabType, label: 'Orders', icon: Clock },
   ];
 
@@ -296,9 +292,6 @@ function App() {
 
   const renderMainContent = () => {
     switch (activeTab) {
-      case 'promotions':
-        return <DailyPromotions onAddToCart={handleAddCustomizedToCart} />;
-      
       case 'orders':
         return (
           <OrderHistory 
