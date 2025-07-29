@@ -10,11 +10,19 @@ export const categories: Category[] = [
 ];
 
 export const drinkCategories = [
-  { id: 'happy-hour', name: 'Happy Hour', icon: 'Clock', special: true },
-  { id: 'wine-champagne', name: 'Wine & Champagne', icon: 'Wine' },
-  { id: 'beer', name: 'Beer', icon: 'Beer' },
-  { id: 'cocktails', name: 'Cocktails', icon: 'Martini' },
-  { id: 'spirits', name: 'Premium Spirits', icon: 'Bottle' },
-  { id: 'shots', name: 'Shots & Specials', icon: 'Zap' },
-  { id: 'non-alcoholic', name: 'Non-Alcoholic', icon: 'Coffee' },
+  { id: 'Bubbles', name: 'Bubbles', icon: 'Wine' },
+  { id: 'White Wine', name: 'White Wine', icon: 'Wine' },
+  { id: 'Rosé', name: 'Rosé', icon: 'Wine' },
+  { id: 'Red Wine', name: 'Red Wine', icon: 'Wine' },
+  { id: 'Spirits', name: 'Spirits', icon: 'Bottle' },
+  { id: 'Beer', name: 'Beer', icon: 'Beer' },
+  { id: 'Cocktails', name: 'Cocktails', icon: 'Martini' },
+  { id: 'Draft', name: 'Draft Beer', icon: 'Beer' },
+  { id: 'Bottled', name: 'Bottled Beer', icon: 'Beer' },
+  { id: 'Signature', name: 'Signature Cocktails', icon: 'Martini' },
+  { id: 'Classic', name: 'Classic Cocktails', icon: 'Martini' },
+  { id: 'Water', name: 'Water', icon: 'Coffee' },
+  { id: 'Soft Drinks', name: 'Soft Drinks', icon: 'Coffee' },
+  { id: 'Coffee', name: 'Coffee', icon: 'Coffee' },
+  { id: 'Tea', name: 'Tea', icon: 'Coffee' },
 ];

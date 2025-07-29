@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
 import { X, Clock, Users, Utensils, Check, Flame, Leaf, Star } from 'lucide-react';
-import { tapasNightPackage, tapasNightItems } from '../data/tapasNight';
+import { useMenuItems } from '../hooks/useMenuItems';
 import { MenuItem as MenuItemType, CartItem } from '../types';
+
+const tapasNightPackage = {
+  id: 'tapas-night-package',
+  name: 'Monday Tapas Night',
+  description: 'Unlimited tapas for 2 hours • All items available • 3 dishes per person per round',
+  price: 39,
+  duration: '2 hours',
+  availableDay: 'Monday',
+  timeSlot: '6:00 PM - 10:00 PM',
+  orderingStyle: '3 dishes per person per round',
+  groupPolicy: 'One in? All in. The whole table MUST join the fun'
+};
 
 interface TapasNightMenuProps {
   isOpen: boolean;
@@ -18,9 +30,15 @@ export const TapasNightMenu: React.FC<TapasNightMenuProps> = ({
 }) => {
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [vegetarianOnly, setVegetarianOnly] = useState(false);
+  const { menuItems } = useMenuItems();
 
   if (!isOpen) return null;
 
+  // Get tapas items for tapas night (price 0 indicates tapas night items)
+  const tapasNightItems = menuItems.filter(item => 
+    item.category === 'tapas' && item.price === 0
+  );
+  
   const filteredItems = tapasNightItems.filter(item => 
     !vegetarianOnly || item.tags?.includes('vegetarian')
   );

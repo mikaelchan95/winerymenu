@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
 import { MenuItem as MenuItemType } from '../types';
-import { 
-  happyHourItems, 
-  beerItems, 
-  cocktailItems, 
-  ginInfusions, 
-  shotItems, 
-  spiritItems,
-  nonAlcoholicItems 
-} from '../data/drinks';
+import { useMenuItems } from '../hooks/useMenuItems';
 import { Clock, Filter, Star, Plus, Minus, ShoppingCart, Check, Wine } from 'lucide-react';
 
 interface DrinkMenuProps {
@@ -16,32 +8,19 @@ interface DrinkMenuProps {
   activeCategory: string;
 }
 
-const drinkSubcategories = {
-  'happy-hour': ['Bubbles', 'White Wine', 'Rosé', 'Red Wine', 'Spirits', 'Beer', 'Cocktails'],
-  'beer': ['Draft', 'Bottled'],
-  'cocktails': ['Signature', 'Classic', 'Mocktails', 'Gin Infusions'],
-  'spirits': ['Whisky', 'Gin', 'Vodka', 'Bourbon', 'Rum', 'Tequila', 'Brandy'],
-  'shots': ['Premium Shots', 'Classic Shots', 'Signature Shots', 'Energy Shots'],
-  'non-alcoholic': ['Water', 'Soft Drinks', 'Coffee', 'Tea']
-};
+const drinkSubcategories: { [key: string]: string[] } = {};
 
 export const DrinkMenu: React.FC<DrinkMenuProps> = ({ onAddToCart, activeCategory }) => {
+  const { menuItems } = useMenuItems();
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [priceFilter, setPriceFilter] = useState<string>('all');
 
-  const getDrinkItems = () => {
-    switch (activeCategory) {
-      case 'happy-hour': return happyHourItems;
-      case 'beer': return beerItems;
-      case 'cocktails': return [...cocktailItems, ...ginInfusions];
-      case 'spirits': return spiritItems;
-      case 'shots': return shotItems;
-      case 'non-alcoholic': return nonAlcoholicItems;
-      default: return [];
-    }
-  };
-
-  const items = getDrinkItems();
+  // Filter drink items by active category
+  const items = menuItems.filter(item => 
+    item.category === 'drinks' && 
+    (!activeCategory || item.subcategory === activeCategory)
+  );
+  
   const subcategories = drinkSubcategories[activeCategory as keyof typeof drinkSubcategories] || [];
 
   const filteredItems = items.filter(item => {
@@ -54,46 +33,8 @@ export const DrinkMenu: React.FC<DrinkMenuProps> = ({ onAddToCart, activeCategor
     return subcategoryMatch && priceMatch;
   });
 
-  const getHappyHourNotice = () => {
-    if (activeCategory === 'happy-hour') {
-      return (
-        <div className="mb-6 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-2xl p-6 shadow-lg">
-          <div className="flex items-center space-x-4">
-            <Clock size={24} className="text-white flex-shrink-0" />
-            <div>
-              <h3 className="font-bold text-lg mb-1">Happy Hour Special</h3>
-              <p className="text-orange-100 text-sm">Available from opening until 7:00 PM daily</p>
-            </div>
-          </div>
-        </div>
-      );
-    }
-    return null;
-  };
-
-  const getSpecialBanner = () => {
-    if (activeCategory === 'cocktails' && selectedSubcategory === 'Gin Infusions') {
-      return (
-        <div className="mb-6 bg-gradient-to-r from-black to-gray-800 text-white rounded-2xl p-6 shadow-lg">
-          <div className="flex items-center space-x-4 mb-3">
-            <Star size={24} className="text-white" />
-            <h3 className="font-bold text-lg">Artisan Gin Infusions</h3>
-          </div>
-          <p className="text-gray-300 text-sm leading-relaxed">
-            Our homemade infusions are crafted with a blend of enchanting flavors. 
-            Every gin begins with a meticulously selected base, infused with organic ingredients 
-            handpicked by our passionate bar team.
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
-
   return (
     <div>
-      {getHappyHourNotice()}
-      
       {/* Filters */}
       <div className="mb-6 flex flex-wrap gap-3">
         {/* Subcategory Filter */}
@@ -140,8 +81,6 @@ export const DrinkMenu: React.FC<DrinkMenuProps> = ({ onAddToCart, activeCategor
           </select>
         </div>
       </div>
-
-      {getSpecialBanner()}
 
       {/* Items Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
