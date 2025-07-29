@@ -290,6 +290,18 @@ function App() {
   const isFoodCategory = !isDrinkCategory;
 
   const renderMainContent = () => {
+    // Show item detail page if an item is selected
+    if (selectedItem) {
+      return (
+        <ItemModal
+          item={selectedItem}
+          isOpen={true}
+          onClose={() => setSelectedItem(null)}
+          onAddToCart={handleAddCustomizedToCart}
+        />
+      );
+    }
+
     switch (activeTab) {
       case 'orders':
         return (
@@ -712,15 +724,6 @@ function App() {
       )}
 
       {/* Modals */}
-      {selectedItem && (
-        <ItemModal
-          item={selectedItem}
-          isOpen={!!selectedItem}
-          onClose={() => setSelectedItem(null)}
-          onAddToCart={handleAddCustomizedToCart}
-        />
-      )}
-
       <Cart
         items={cartItems}
         onUpdateQuantity={handleUpdateQuantity}
