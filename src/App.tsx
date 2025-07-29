@@ -423,17 +423,12 @@ function App() {
               <div className="mb-8">
                 <div className="bg-green-50 border border-green-200 rounded-2xl p-6">
                   <h3 className="font-bold text-green-900 mb-4">Free Tapas Available</h3>
-                  <div className={`grid gap-3 ${
-                    isCompactView 
-                      ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
-                      : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-                  }`}>
+                  <div className="grid gap-3 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                     {tapasNightItems.slice(0, 6).map((item) => (
                       <MenuItem
                         key={item.id}
                         item={item}
                         onAddToCart={handleAddToCart}
-                        compact={true}
                       />
                     ))}
                   </div>
@@ -448,19 +443,12 @@ function App() {
             )}
 
             {!isLoadingMenu && !menuError && (
-              <div className={`
-              grid gap-4
-              ${isCompactView 
-                ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6' 
-                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
-              }
-              `}>
+              <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {filteredItems.map((item) => (
                   <MenuItem
                     key={item.id}
                     item={item}
                     onAddToCart={handleAddToCart}
-                    compact={isCompactView}
                   />
                 ))}
               </div>
