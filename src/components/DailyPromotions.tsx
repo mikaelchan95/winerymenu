@@ -150,108 +150,108 @@ export const DailyPromotions: React.FC<DailyPromotionsProps> = ({ onAddToCart })
           const hasDiscount = promo.originalPrice && promo.price;
           
           return (
-            <div
-              key={promo.day}
-              className={`relative rounded-2xl border-2 transition-all duration-200 cursor-pointer group ${
-                isToday 
-                  ? 'bg-black text-white border-black' 
-                  : 'bg-white border-gray-200 hover:border-gray-300'
-              }`}
-              onClick={() => {
-                if (promo.requiresPax) {
-                  setExpandedCard(isExpanded ? null : promo.day);
-                } else {
-                  handlePromotionClick(promo);
-                }
-              }}
-            >
-              {/* Badge */}
-              {isToday && (
-                <div className="absolute -top-2 -right-2 bg-red-600 text-white px-2 py-1 rounded-lg text-xs font-bold">
-                  TODAY
-                </div>
-              )}
-
-              {/* Compact Content */}
-              <div className="p-4">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center space-x-3">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                      isToday ? 'bg-white/20' : 'bg-gray-100'
-                    }`}>
-                      <IconComponent size={16} className={isToday ? 'text-white' : 'text-gray-700'} />
-                    </div>
-                    <div>
-                      <div className={`text-xs font-medium uppercase tracking-wide mb-1 ${
-                        isToday ? 'text-gray-300' : 'text-gray-500'
-                      }`}>
-                        {promo.day}
-                      </div>
-                      <h3 className={`font-bold text-sm ${isToday ? 'text-white' : 'text-gray-900'}`}>
-                        {promo.title}
-                      </h3>
-                    </div>
+            <div key={promo.day} className="space-y-4">
+              {/* Main Promo Box */}
+              <div
+                className={`relative rounded-2xl border-2 transition-all duration-200 cursor-pointer group aspect-video bg-gradient-to-br ${
+                  isToday 
+                    ? 'from-black to-gray-800 text-white border-black' 
+                    : 'from-gray-100 to-gray-200 border-gray-200 hover:border-gray-300'
+                }`}
+                onClick={() => {
+                  if (promo.requiresPax) {
+                    setExpandedCard(isExpanded ? null : promo.day);
+                  } else {
+                    handlePromotionClick(promo);
+                  }
+                }}
+              >
+                {/* Badge */}
+                {isToday && (
+                  <div className="absolute -top-2 -right-2 bg-red-600 text-white px-2 py-1 rounded-lg text-xs font-bold">
+                    TODAY
                   </div>
-                  
-                  {/* Price */}
-                  <div className="text-right">
-                    {promo.price ? (
-                      <div className={`font-bold ${isToday ? 'text-white' : 'text-gray-900'}`}>
-                        ${promo.price}
-                      </div>
-                    ) : (
-                      <div className={`font-bold text-sm ${isToday ? 'text-white' : 'text-gray-900'}`}>
-                        FREE
-                      </div>
-                    )}
+                )}
+
+                {/* Placeholder for Future Image */}
+                <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-gradient-to-br from-transparent via-transparent to-black/20">
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center ${
+                    isToday ? 'bg-white/20' : 'bg-black/10'
+                  }`}>
+                    <IconComponent size={32} className={isToday ? 'text-white' : 'text-gray-600'} />
+                  </div>
+                </div>
+
+                {/* Title Overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <div className={`text-xs font-medium uppercase tracking-wide mb-2 ${
+                    isToday ? 'text-gray-300' : 'text-gray-600'
+                  }`}>
+                    {promo.day}
+                  </div>
+                  <h3 className={`font-bold text-xl ${isToday ? 'text-white' : 'text-gray-900'}`}>
+                    {promo.title}
+                  </h3>
+                </div>
+              </div>
+
+              {/* Details Below Box */}
+              <div className="space-y-3">
+                {/* Price and Discount */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <Clock size={16} className="text-gray-500" />
+                    <span className="text-sm text-gray-600">{promo.time}</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
                     {hasDiscount && (
-                      <div className="text-xs text-red-600 line-through">
-                        ${promo.originalPrice}
-                      </div>
+                      <span className="text-sm text-red-600 line-through">${promo.originalPrice}</span>
+                    )}
+                    {promo.price ? (
+                      <span className="text-xl font-bold text-gray-900">${promo.price}</span>
+                    ) : (
+                      <span className="text-xl font-bold text-green-600">FREE</span>
                     )}
                   </div>
                 </div>
                 
                 {/* Description */}
-                <p className={`text-xs mb-3 ${isToday ? 'text-gray-300' : 'text-gray-600'}`}>
+                <p className="text-sm text-gray-700 leading-relaxed">
                   {promo.description}
                 </p>
-                
-                {/* Time + Action */}
-                <div className="flex items-center justify-between">
-                  <div className={`flex items-center space-x-1 text-xs ${
-                    isToday ? 'text-gray-300' : 'text-gray-500'
-                  }`}>
-                    <Clock size={12} />
-                    <span>{promo.time}</span>
-                  </div>
-                  
-                  {promo.requiresPax ? (
-                    <div className={`text-xs font-medium px-2 py-1 rounded-lg ${
-                      isToday 
-                        ? 'bg-white/20 text-white' 
-                        : 'bg-gray-100 text-gray-700'
-                    }`}>
-                      {isExpanded ? 'Select' : 'Expand'}
-                    </div>
-                  ) : (
-                    <ArrowRight size={12} className={`${
-                      isToday ? 'text-white' : 'text-gray-500'
-                    } group-hover:translate-x-1 transition-transform`} />
-                  )}
-                </div>
+
+                {/* Action Button */}
+                {promo.requiresPax ? (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setExpandedCard(isExpanded ? null : promo.day);
+                    }}
+                    className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-3 rounded-xl font-medium transition-colors duration-150 flex items-center justify-center space-x-2"
+                  >
+                    <Users size={16} />
+                    <span>{isExpanded ? 'Close' : 'Select People'}</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePromotionClick(promo);
+                    }}
+                    className="w-full bg-black hover:bg-gray-800 text-white px-4 py-3 rounded-xl font-medium transition-colors duration-150 flex items-center justify-center space-x-2"
+                  >
+                    <span>Order Now</span>
+                    <ArrowRight size={16} />
+                  </button>
+                )}
               </div>
 
               {/* Expanded Pax Selector */}
               {isExpanded && promo.requiresPax && (
-                <div className={`border-t p-4 ${
-                  isToday ? 'border-white/20 bg-white/10' : 'border-gray-200 bg-gray-50'
-                }`}>
+                <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
                   <div className="flex items-center justify-between mb-4">
-                    <span className={`text-sm font-medium ${
-                      isToday ? 'text-white' : 'text-gray-900'
-                    }`}>
-                      People:
+                    <span className="text-sm font-medium text-gray-900">
+                      Number of People:
                     </span>
                     <div className="flex items-center space-x-3">
                       <button
@@ -260,18 +260,12 @@ export const DailyPromotions: React.FC<DailyPromotionsProps> = ({ onAddToCart })
                           adjustPax(false);
                         }}
                         disabled={tapasNightPax <= 1}
-                        className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all touch-target ${
-                          isToday 
-                            ? 'bg-white/20 hover:bg-white/30 text-white disabled:opacity-50' 
-                            : 'bg-white hover:bg-gray-100 text-gray-600 disabled:opacity-50'
-                        }`}
+                        className="w-8 h-8 bg-white hover:bg-gray-100 text-gray-600 disabled:opacity-50 rounded-lg flex items-center justify-center transition-all touch-target border border-gray-200"
                       >
                         <Minus size={14} />
                       </button>
                       
-                      <span className={`font-bold min-w-[2.5rem] text-center text-base ${
-                        isToday ? 'text-white' : 'text-gray-900'
-                      }`}>
+                      <span className="font-bold min-w-[2.5rem] text-center text-base text-gray-900">
                         {tapasNightPax}
                       </span>
                       
@@ -281,11 +275,7 @@ export const DailyPromotions: React.FC<DailyPromotionsProps> = ({ onAddToCart })
                           adjustPax(true);
                         }}
                         disabled={tapasNightPax >= 12}
-                        className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all touch-target ${
-                          isToday 
-                            ? 'bg-white/20 hover:bg-white/30 text-white disabled:opacity-50' 
-                            : 'bg-white hover:bg-gray-100 text-gray-600 disabled:opacity-50'
-                        }`}
+                        className="w-8 h-8 bg-white hover:bg-gray-100 text-gray-600 disabled:opacity-50 rounded-lg flex items-center justify-center transition-all touch-target border border-gray-200"
                       >
                         <Plus size={14} />
                       </button>
@@ -297,11 +287,7 @@ export const DailyPromotions: React.FC<DailyPromotionsProps> = ({ onAddToCart })
                       e.stopPropagation();
                       handlePromotionClick(promo);
                     }}
-                    className={`w-full py-3 px-4 rounded-lg font-medium text-sm transition-all touch-target min-h-[44px] ${
-                      isToday 
-                        ? 'bg-white text-black hover:bg-gray-100' 
-                        : 'bg-black text-white hover:bg-gray-800'
-                    }`}
+                    className="w-full bg-black hover:bg-gray-800 text-white py-3 px-4 rounded-lg font-medium text-sm transition-all touch-target min-h-[44px]"
                   >
                     View Menu • ${(promo.price || 0) * tapasNightPax}
                   </button>
