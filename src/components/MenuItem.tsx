@@ -107,17 +107,6 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, onAddToCart, onItemCli
         {/* Description */}
         <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-1 leading-relaxed">{item.description}</p>
         
-        {/* Allergen Warning */}
-        {item.allergens && item.allergens.length > 0 && (
-          <div className="flex items-center space-x-1 mb-4 p-2 bg-yellow-50 rounded-lg">
-            <AlertCircle size={14} className="text-yellow-600 flex-shrink-0" />
-            <span className="text-xs text-yellow-700">
-              Contains: {item.allergens.slice(0, 2).join(', ')}
-              {item.allergens.length > 2 && ` +${item.allergens.length - 2} more`}
-            </span>
-          </div>
-        )}
-
         {/* Click hint */}
         <div className="text-xs text-gray-400 mb-4 flex items-center">
           <span>Tap for ingredients & options</span>
