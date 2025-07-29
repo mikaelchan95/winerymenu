@@ -96,8 +96,8 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose, onA
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-20 safe-area-top">
-        <div className="flex items-center px-6 py-4">
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-20">
+        <div className="flex items-center px-6 py-4 pt-safe-area">
           <button
             onClick={onClose}
             className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors duration-150 mr-4"
@@ -327,10 +327,12 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose, onA
             ))}
           </div>
         </div>
+        </div>
       </div>
 
       {/* Sticky Add to Cart */}
-      <div className="sticky bottom-0 bg-white border-t border-gray-200 p-6 shadow-lg safe-area-bottom">
+      <div className="sticky bottom-0 bg-white border-t border-gray-200 shadow-lg">
+        <div className="p-6 pb-safe-area">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-6">
             <div className="flex items-center space-x-2">
