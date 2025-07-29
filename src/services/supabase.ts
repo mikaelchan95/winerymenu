@@ -153,18 +153,24 @@ export const getMenuImageUrl = (imagePath: string): string => {
     return imagePath;
   }
 
-  // Legacy support: If it's just a filename, construct Supabase URL
-  // This handles old data that might still have just filenames
-  console.log('Converting filename to URL:', imagePath);
+  // For filenames, construct Supabase URL with caching optimization
+  try {
+    const { data } = supabase.storage
+      .from(MENU_IMAGES_BUCKET)
+      .getPublicUrl(imagePath, {
+        transform: {
+          width: 800,
+          height: 600,
+          resize: 'cover',
+          quality: 80
+        }
+      });
 
-  // Get public URL from Supabase Storage
-  const { data } = supabase.storage
-    .from(MENU_IMAGES_BUCKET)
-    .getPublicUrl(imagePath);
-
-  console.log('Generated URL:', data?.publicUrl);
-
-  return data?.publicUrl || '/assets/images/veganpopcornchickentofurecipe-h1.jpg';
+    return data?.publicUrl || '/assets/images/veganpopcornchickentofurecipe-h1.jpg';
+  } catch (error) {
+    console.error('Error generating image URL:', error);
+    return '/assets/images/veganpopcornchickentofurecipe-h1.jpg';
+  }
 };
 
 /**

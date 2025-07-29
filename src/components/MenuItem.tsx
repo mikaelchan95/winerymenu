@@ -12,6 +12,8 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, onAddToCart, compact =
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const handleQuantityChange = (newQuantity: number) => {
     setQuantity(Math.max(1, newQuantity));
@@ -34,6 +36,14 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, onAddToCart, compact =
     }, 1500);
   };
 
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
+    setImageLoaded(true);
+  };
   if (compact) {
     return (
       <div className="bg-white rounded-2xl border border-gray-200 hover:border-gray-300 transition-all duration-150 p-4 hover:shadow-md active:scale-[0.98] will-change-transform h-full flex flex-col">
@@ -124,17 +134,33 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, onAddToCart, compact =
     <div className="group bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full will-change-transform">
       {/* Image */}
       <div className="relative overflow-hidden h-48">
+        {/* Loading placeholder */}
+        {!imageLoaded && (
+          <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
+            <div className="w-12 h-12 border-4 border-gray-300 border-t-gray-600 rounded-full animate-spin"></div>
+          </div>
+        )}
+        
         <img 
           src={item.image} 
           alt={item.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          onError={(e) => {
-            e.currentTarget.src = '/assets/images/veganpopcornchickentofurecipe-h1.jpg';
-          }}
-          onLoad={() => {
-            console.log('Image loaded successfully:', item.image);
-          }}
+          className={`w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ${
+            imageLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          onError={handleImageError}
+          onLoad={handleImageLoad}
+          loading="lazy"
         />
+        
+        {/* Fallback when image fails to load */}
+        {imageError && imageLoaded && (
+          <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
+            <div className="text-center text-gray-400">
+              <div className="text-2xl mb-2">🍽️</div>
+              <div className="text-sm">Image unavailable</div>
+            </div>
+          </div>
+        )}
         
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
