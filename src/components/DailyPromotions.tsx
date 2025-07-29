@@ -166,57 +166,46 @@ export const DailyPromotions: React.FC<DailyPromotionsProps> = ({ onAddToCart })
                   }
                 }}
               >
-                {/* Badge */}
-                {isToday && (
-                  <div className="absolute -top-2 -right-2 bg-red-600 text-white px-2 py-1 rounded-lg text-xs font-bold">
-                    TODAY
-                  </div>
-                )}
-
-                {/* Placeholder for Future Image */}
-                <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-gradient-to-br from-transparent via-transparent to-black/20">
-                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center ${
-                    isToday ? 'bg-white/20' : 'bg-black/10'
-                  }`}>
-                    <IconComponent size={32} className={isToday ? 'text-white' : 'text-gray-600'} />
-                  </div>
-                </div>
-
-                {/* Title Overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <div className={`text-xs font-medium uppercase tracking-wide mb-2 ${
-                    isToday ? 'text-gray-300' : 'text-gray-600'
-                  }`}>
-                    {promo.day}
-                  </div>
-                  <h3 className={`font-bold text-xl ${isToday ? 'text-white' : 'text-gray-900'}`}>
-                    {promo.title}
-                  </h3>
+                {/* Clean Image Placeholder */}
+                <div className="absolute inset-0 rounded-2xl bg-gray-100 flex items-center justify-center">
+                  <IconComponent size={32} className="text-gray-400" />
                 </div>
               </div>
 
               {/* Details Below Box */}
               <div className="space-y-3">
+                {/* Day and Title */}
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                      {promo.day}
+                    </span>
+                    {isToday && (
+                      <span className="bg-black text-white px-2 py-1 rounded text-xs font-bold">
+                        TODAY
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="font-bold text-lg text-gray-900">{promo.title}</h3>
+                </div>
+
                 {/* Price and Discount */}
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Clock size={16} className="text-gray-500" />
-                    <span className="text-sm text-gray-600">{promo.time}</span>
-                  </div>
+                  <span className="text-sm text-gray-600">{promo.time}</span>
                   <div className="flex items-center space-x-2">
                     {hasDiscount && (
                       <span className="text-sm text-red-600 line-through">${promo.originalPrice}</span>
                     )}
                     {promo.price ? (
-                      <span className="text-xl font-bold text-gray-900">${promo.price}</span>
+                      <span className="text-lg font-bold text-gray-900">${promo.price}</span>
                     ) : (
-                      <span className="text-xl font-bold text-green-600">FREE</span>
+                      <span className="text-lg font-bold text-green-600">FREE</span>
                     )}
                   </div>
                 </div>
                 
-                {/* Description */}
-                <p className="text-sm text-gray-700 leading-relaxed">
+                {/* Simple Description */}
+                <p className="text-sm text-gray-600">
                   {promo.description}
                 </p>
 
@@ -227,10 +216,9 @@ export const DailyPromotions: React.FC<DailyPromotionsProps> = ({ onAddToCart })
                       e.stopPropagation();
                       setExpandedCard(isExpanded ? null : promo.day);
                     }}
-                    className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-3 rounded-xl font-medium transition-colors duration-150 flex items-center justify-center space-x-2"
+                    className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                   >
-                    <Users size={16} />
-                    <span>{isExpanded ? 'Close' : 'Select People'}</span>
+                    {isExpanded ? 'Close' : 'Select People'}
                   </button>
                 ) : (
                   <button
@@ -238,20 +226,19 @@ export const DailyPromotions: React.FC<DailyPromotionsProps> = ({ onAddToCart })
                       e.stopPropagation();
                       handlePromotionClick(promo);
                     }}
-                    className="w-full bg-black hover:bg-gray-800 text-white px-4 py-3 rounded-xl font-medium transition-colors duration-150 flex items-center justify-center space-x-2"
+                    className="w-full bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                   >
-                    <span>Order Now</span>
-                    <ArrowRight size={16} />
+                    Order Now
                   </button>
                 )}
               </div>
 
               {/* Expanded Pax Selector */}
               {isExpanded && promo.requiresPax && (
-                <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-sm font-medium text-gray-900">
-                      Number of People:
+                      People:
                     </span>
                     <div className="flex items-center space-x-3">
                       <button
@@ -260,12 +247,12 @@ export const DailyPromotions: React.FC<DailyPromotionsProps> = ({ onAddToCart })
                           adjustPax(false);
                         }}
                         disabled={tapasNightPax <= 1}
-                        className="w-8 h-8 bg-white hover:bg-gray-100 text-gray-600 disabled:opacity-50 rounded-lg flex items-center justify-center transition-all touch-target border border-gray-200"
+                        className="w-8 h-8 bg-white hover:bg-gray-100 text-gray-600 disabled:opacity-50 rounded-lg flex items-center justify-center border border-gray-200"
                       >
                         <Minus size={14} />
                       </button>
                       
-                      <span className="font-bold min-w-[2.5rem] text-center text-base text-gray-900">
+                      <span className="font-bold min-w-[2rem] text-center text-gray-900">
                         {tapasNightPax}
                       </span>
                       
@@ -275,7 +262,7 @@ export const DailyPromotions: React.FC<DailyPromotionsProps> = ({ onAddToCart })
                           adjustPax(true);
                         }}
                         disabled={tapasNightPax >= 12}
-                        className="w-8 h-8 bg-white hover:bg-gray-100 text-gray-600 disabled:opacity-50 rounded-lg flex items-center justify-center transition-all touch-target border border-gray-200"
+                        className="w-8 h-8 bg-white hover:bg-gray-100 text-gray-600 disabled:opacity-50 rounded-lg flex items-center justify-center border border-gray-200"
                       >
                         <Plus size={14} />
                       </button>
@@ -287,9 +274,9 @@ export const DailyPromotions: React.FC<DailyPromotionsProps> = ({ onAddToCart })
                       e.stopPropagation();
                       handlePromotionClick(promo);
                     }}
-                    className="w-full bg-black hover:bg-gray-800 text-white py-3 px-4 rounded-lg font-medium text-sm transition-all touch-target min-h-[44px]"
+                    className="w-full bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-lg text-sm font-medium"
                   >
-                    View Menu • ${(promo.price || 0) * tapasNightPax}
+                    ${(promo.price || 0) * tapasNightPax}
                   </button>
                 </div>
               )}
@@ -300,25 +287,8 @@ export const DailyPromotions: React.FC<DailyPromotionsProps> = ({ onAddToCart })
 
       {/* Footer */}
       <div className="mt-8 pt-6 border-t border-gray-200">
-        <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-6 border border-gray-200">
-          <div className="text-center">
-            <h3 className="text-lg font-bold text-gray-900 mb-2">Ready to Order?</h3>
-            <p className="text-gray-600 text-sm mb-4">All specials are available now • Order directly from your table</p>
-            <div className="flex items-center justify-center space-x-6 text-sm">
-              <div className="flex items-center space-x-2 text-green-600">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="font-medium">Available Now</span>
-              </div>
-              <div className="flex items-center space-x-2 text-blue-600">
-                <Clock size={14} />
-                <span className="font-medium">Fast Service</span>
-              </div>
-              <div className="flex items-center space-x-2 text-purple-600">
-                <Star size={14} />
-                <span className="font-medium">Chef's Special</span>
-              </div>
-            </div>
-          </div>
+        <div className="text-center">
+          <p className="text-sm text-gray-500">All specials available now</p>
         </div>
       </div>
 
