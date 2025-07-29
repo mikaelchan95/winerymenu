@@ -143,14 +143,19 @@ export const getMenuImageUrl = (imagePath: string): string => {
     return '/assets/images/veganpopcornchickentofurecipe-h1.jpg'; // Fallback image
   }
 
-  // If it's already a full URL, return as is
-  if (imagePath.startsWith('http') || imagePath.startsWith('/assets')) {
+  // If it's already a full URL (starts with http/https), return as is
+  if (imagePath.startsWith('http')) {
     return imagePath;
   }
 
-  // Debug logging
-  console.log('Getting image URL for:', imagePath);
+  // If it's a local asset path, return as is
+  if (imagePath.startsWith('/assets')) {
+    return imagePath;
+  }
 
+  // Legacy support: If it's just a filename, construct Supabase URL
+  // This handles old data that might still have just filenames
+  console.log('Converting filename to URL:', imagePath);
 
   // Get public URL from Supabase Storage
   const { data } = supabase.storage
