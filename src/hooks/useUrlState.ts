@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { categories, drinkCategories } from '../data/categories';
 
-type TabType = 'menu' | 'orders';</action>
+type TabType = 'menu' | 'orders';
 
 interface UrlState {
   activeTab: TabType;

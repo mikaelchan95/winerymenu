@@ -41,7 +41,7 @@ const iconMap = {
   Coffee
 };
 
-type TabType = 'menu' | 'orders';</action>
+type TabType = 'menu' | 'orders';
 
 function App() {
   // Initialize state from URL parameters or defaults

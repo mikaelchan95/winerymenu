@@ -1,7 +1,7 @@
 import React from 'react';
 import { Home, Star, Clock, User } from 'lucide-react';
 
-type TabType = 'menu' | 'orders';</action>
+type TabType = 'menu' | 'orders';
 
 interface TabBarProps {
   activeTab: TabType;
