@@ -610,9 +610,9 @@ function App() {
         {/* Categories - Only show when expanded and on menu tab */}
         {!isSidebarCollapsed && activeTab === 'menu' && (
           <div className="flex-1 overflow-y-auto p-3 momentum-scroll">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Categories</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Food</h3>
             <div className="space-y-1">
-              {categories.map((category) => (
+              {categories.filter(cat => cat.id !== 'drinks').map((category) => (
                 <MenuCategory
                   key={category.id}
                   category={category}
@@ -620,6 +620,19 @@ function App() {
                   onClick={() => handleCategoryClick(category.id)}
                 />
               ))}
+            </div>
+
+            {/* Drinks Section */}
+            <div className="mt-6">
+              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Drinks</h3>
+              <div className="space-y-1">
+                <MenuCategory
+                  key="drinks"
+                  category={categories.find(cat => cat.id === 'drinks')!}
+                  isActive={activeCategory === 'drinks'}
+                  onClick={() => handleCategoryClick('drinks')}
+                />
+              </div>
             </div>
 
             {/* Drink Subcategories */}
