@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { ShoppingCart, Store, Home, Clock, Star, User, Leaf, LayoutGrid, List, Menu, X } from 'lucide-react';
+import { ShoppingCart, Store, Home, Clock, Star, User, Leaf, Menu, X } from 'lucide-react';
 import { UtensilsCrossed, Sparkles, ChefHat, Cake, Wine, Beer, Martini, Bot as Bottle, Zap, Coffee } from 'lucide-react';
 import { MenuCategory } from './components/MenuCategory';
 import { MenuItem } from './components/MenuItem';
