@@ -140,11 +140,6 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose, onA
                 Vegan
               </div>
             )}
-            {item.dietaryLabels?.includes('halal available') && (
-              <div className="bg-blue-600/90 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg">
-                Halal Available
-              </div>
-            )}
           </div>
         </div>
         
@@ -213,7 +208,6 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose, onA
                       px-3 py-2 rounded-lg text-sm font-medium
                       ${label === 'vegan' ? 'bg-green-100 text-green-800 border border-green-200' :
                         label === 'vegetarian' ? 'bg-green-100 text-green-700 border border-green-200' :
-                        label === 'halal available' ? 'bg-blue-100 text-blue-800 border border-blue-200' :
                         label === 'gluten-free' ? 'bg-yellow-100 text-yellow-800 border border-yellow-200' :
                         'bg-gray-100 text-gray-700 border border-gray-200'
                       }

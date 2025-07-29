@@ -104,32 +104,6 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, onAddToCart, onItemCli
           </div>
         </div>
 
-        {/* Dietary Labels & Quick Info */}
-        <div className="flex flex-wrap gap-1 mb-3">
-          {item.dietaryLabels?.slice(0, 2).map(label => (
-            <span 
-              key={label} 
-              className={`
-                text-xs px-2 py-1 rounded-full font-medium
-                ${label === 'vegan' ? 'bg-green-100 text-green-700' :
-                  label === 'vegetarian' ? 'bg-green-100 text-green-600' :
-                  label === 'halal available' ? 'bg-blue-100 text-blue-700' :
-                  label === 'gluten-free' ? 'bg-yellow-100 text-yellow-700' :
-                  'bg-gray-100 text-gray-600'
-                }
-              `}
-            >
-              {label}
-            </span>
-          ))}
-          {item.preparationTime && (
-            <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600 flex items-center">
-              <Clock size={10} className="mr-1" />
-              {item.preparationTime}min
-            </span>
-          )}
-        </div>
-        
         {/* Description */}
         <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-1 leading-relaxed">{item.description}</p>
         
