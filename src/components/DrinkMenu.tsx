@@ -146,7 +146,7 @@ export const DrinkMenu: React.FC<DrinkMenuProps> = ({ onAddToCart, activeCategor
       {/* Items Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filteredItems.map(item => (
-          <DrinkCard key={item.id} item={item} onAddToCart={onAddToCart} onViewDetails={() => {}} />
+          <DrinkCard key={item.id} item={item} onAddToCart={onAddToCart} />
         ))}
       </div>
 
@@ -165,10 +165,9 @@ export const DrinkMenu: React.FC<DrinkMenuProps> = ({ onAddToCart, activeCategor
 interface DrinkCardProps {
   item: MenuItemType;
   onAddToCart: (item: MenuItemType, quantity: number) => void;
-  onViewDetails: (item: MenuItemType) => void;
 }
 
-const DrinkCard: React.FC<DrinkCardProps> = ({ item, onAddToCart, onViewDetails }) => {
+const DrinkCard: React.FC<DrinkCardProps> = ({ item, onAddToCart }) => {
   const [quantity, setQuantity] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);

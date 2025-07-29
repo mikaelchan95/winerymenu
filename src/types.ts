@@ -11,7 +11,6 @@ export interface MenuItem {
   spiceLevel?: number;
   tags?: string[];
   featured?: boolean;
-  ingredients?: string[];
 }
 
 export interface Customization {
