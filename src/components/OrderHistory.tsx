@@ -15,6 +15,8 @@ export const OrderHistory: React.FC<OrderHistoryProps> = ({
 }) => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [swipedOrderId, setSwipedOrderId] = useState<string | null>(null);
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const getStatusConfig = (status: Order['status']) => {
     switch (status) {
@@ -87,12 +89,49 @@ export const OrderHistory: React.FC<OrderHistoryProps> = ({
     });
   };
 
-  const handleSwipeStart = (orderId: string) => {
-    setSwipedOrderId(orderId);
+  const handleTouchStart = (e: React.TouchEvent, orderId: string) => {
+    const touch = e.touches[0];
+    setTouchStart({ x: touch.clientX, y: touch.clientY });
+    setIsDragging(false);
   };
 
-  const handleSwipeEnd = () => {
-    setTimeout(() => setSwipedOrderId(null), 300);
+  const handleTouchMove = (e: React.TouchEvent, orderId: string) => {
+    if (!touchStart) return;
+    
+    const touch = e.touches[0];
+    const deltaX = touchStart.x - touch.clientX;
+    const deltaY = Math.abs(touchStart.y - touch.clientY);
+    
+    // Only trigger swipe if horizontal movement is significant and vertical is minimal
+    if (deltaX > 50 && deltaY < 30) {
+      setIsDragging(true);
+      setSwipedOrderId(orderId);
+    } else if (deltaX < -20) {
+      // Swipe back to close
+      setSwipedOrderId(null);
+      setIsDragging(false);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setTouchStart(null);
+    if (!isDragging) {
+      setSwipedOrderId(null);
+    }
+    // Auto-close after 3 seconds if swiped
+    if (swipedOrderId) {
+      setTimeout(() => {
+        setSwipedOrderId(null);
+        setIsDragging(false);
+      }, 3000);
+    }
+  };
+
+  const handleDeleteClick = (orderId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    onDeleteOrder(orderId);
+    setSwipedOrderId(null);
+    setIsDragging(false);
   };
 
   if (orders.length === 0) {
@@ -165,10 +204,9 @@ export const OrderHistory: React.FC<OrderHistoryProps> = ({
                 className={`relative transition-transform duration-300 ${
                   swipedOrderId === order.id ? 'transform -translate-x-20' : ''
                 }`}
-                onTouchStart={() => handleSwipeStart(order.id)}
-                onTouchEnd={handleSwipeEnd}
-                onMouseDown={() => handleSwipeStart(order.id)}
-                onMouseUp={handleSwipeEnd}
+                onTouchStart={(e) => handleTouchStart(e, order.id)}
+                onTouchMove={(e) => handleTouchMove(e, order.id)}
+                onTouchEnd={handleTouchEnd}
               >
                 <div className="p-6">
                   {/* Header Row */}
@@ -280,7 +318,7 @@ export const OrderHistory: React.FC<OrderHistoryProps> = ({
                 swipedOrderId === order.id ? 'opacity-100' : 'opacity-0 pointer-events-none'
               }`}>
                 <button
-                  onClick={() => onDeleteOrder(order.id)}
+                  onClick={(e) => handleDeleteClick(order.id, e)}
                   aria-label={`Delete order ${order.orderNumber}`}
                   className="h-full px-8 bg-red-500 hover:bg-red-600 text-white flex items-center justify-center transition-colors duration-150"
                 >
