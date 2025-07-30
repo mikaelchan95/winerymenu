@@ -329,25 +329,25 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({ order, onClose, onR
   })();
 
   return (
-    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in duration-300">
-      <div className="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-hidden shadow-2xl animate-in zoom-in duration-300">
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in duration-300 safe-area-all">
+      <div className="bg-white rounded-3xl max-w-3xl w-full max-h-[85vh] overflow-hidden shadow-2xl animate-in zoom-in duration-300 flex flex-col my-safe-area">
         {/* Header */}
-        <div className="relative p-8 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white">
+        <div className="relative p-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex-shrink-0">
           <button
             onClick={onClose}
             aria-label="Close order details"
-            className="absolute top-6 right-6 w-10 h-10 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-all duration-150 flex items-center justify-center active:scale-95"
+            className="absolute top-4 right-4 w-10 h-10 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-all duration-150 flex items-center justify-center active:scale-95"
           >
             <X size={20} />
           </button>
           
-          <div className="pr-16">
+          <div className="pr-12">
             <div className="flex items-center space-x-4 mb-4">
-              <div className="w-14 h-14 bg-gradient-to-br from-gray-900 to-gray-700 rounded-2xl flex items-center justify-center shadow-lg">
-                <span className="font-bold text-white text-sm">#{order.orderNumber.slice(-3)}</span>
+              <div className="w-12 h-12 bg-gradient-to-br from-gray-900 to-gray-700 rounded-xl flex items-center justify-center shadow-lg">
+                <span className="font-bold text-white text-xs">#{order.orderNumber.slice(-3)}</span>
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">Order #{order.orderNumber}</h2>
+                <h2 className="text-xl font-bold text-gray-900">Order #{order.orderNumber}</h2>
                 <p className="text-gray-500 mt-1">
                   {new Date(order.timestamp).toLocaleDateString('en-US', {
                     weekday: 'long',
@@ -369,12 +369,12 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({ order, onClose, onR
         </div>
 
         {/* Content */}
-        <div className="overflow-auto max-h-[60vh]">
+        <div className="overflow-auto flex-1 min-h-0">
           {/* Items List */}
-          <div className="p-8">
+          <div className="p-6">
             <div className="flex items-center space-x-3 mb-6">
-              <Receipt size={24} className="text-gray-600" />
-              <h3 className="text-xl font-bold text-gray-900">Order Items</h3>
+              <Receipt size={20} className="text-gray-600" />
+              <h3 className="text-lg font-bold text-gray-900">Order Items</h3>
             </div>
             
             <div className="space-y-4">
@@ -386,7 +386,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({ order, onClose, onR
                         <span className="bg-white text-gray-700 text-sm font-bold px-3 py-1.5 rounded-lg border shadow-sm">
                           {item.quantity}×
                         </span>
-                        <h4 className="font-bold text-gray-900 text-lg truncate">{item.menuItem.name}</h4>
+                        <h4 className="font-bold text-gray-900 text-base truncate">{item.menuItem.name}</h4>
                       </div>
                       <p className="text-gray-600 text-sm leading-relaxed line-clamp-2 mb-3">
                         {item.menuItem.description}
@@ -396,7 +396,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({ order, onClose, onR
                       </div>
                     </div>
                     <div className="text-right flex-shrink-0">
-                      <div className="text-xl font-bold text-gray-900">${item.totalPrice.toFixed(2)}</div>
+                      <div className="text-lg font-bold text-gray-900">${item.totalPrice.toFixed(2)}</div>
                     </div>
                   </div>
                   
@@ -418,14 +418,14 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({ order, onClose, onR
           </div>
 
           {/* Bill Breakdown */}
-          <div className="px-8 pb-8">
+          <div className="px-6 pb-6">
             <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-6 border border-gray-200">
-              <div className="flex items-center space-x-3 mb-4">
-                <MapPin size={20} className="text-gray-600" />
-                <h3 className="text-lg font-bold text-gray-900">Bill Summary</h3>
+              <div className="flex items-center space-x-3 mb-3">
+                <MapPin size={18} className="text-gray-600" />
+                <h3 className="text-base font-bold text-gray-900">Bill Summary</h3>
               </div>
               
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <div className="flex justify-between items-center text-gray-700">
                   <span>Subtotal</span>
                   <span className="font-semibold">${order.subtotal.toFixed(2)}</span>
@@ -438,10 +438,10 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({ order, onClose, onR
                   <span>GST (9%)</span>
                   <span className="font-semibold">${order.gst.toFixed(2)}</span>
                 </div>
-                <div className="border-t border-gray-300 pt-3 mt-3">
+                <div className="border-t border-gray-300 pt-2 mt-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-xl font-bold text-gray-900">Total Amount</span>
-                    <span className="text-2xl font-bold text-gray-900">${order.totalAmount.toFixed(2)}</span>
+                    <span className="text-lg font-bold text-gray-900">Total Amount</span>
+                    <span className="text-xl font-bold text-gray-900">${order.totalAmount.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
@@ -450,19 +450,19 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({ order, onClose, onR
         </div>
 
         {/* Actions */}
-        <div className="p-8 border-t border-gray-100 bg-gray-50">
-          <div className="flex space-x-4">
+        <div className="p-6 pb-safe-area border-t border-gray-100 bg-gray-50 flex-shrink-0">
+          <div className="flex space-x-3">
             <button
               onClick={onClose}
               aria-label="Close order details"
-              className="flex-1 px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-2xl font-semibold transition-all duration-150 active:scale-95"
+              className="flex-1 px-4 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl font-semibold transition-all duration-150 active:scale-95"
             >
               Close
             </button>
             <button
               onClick={onReorder}
               aria-label="Reorder these items"
-              className="flex-2 px-8 py-3 bg-black hover:bg-gray-800 text-white rounded-2xl font-semibold transition-all duration-150 flex items-center justify-center space-x-2 active:scale-95 shadow-lg"
+              className="flex-2 px-6 py-3 bg-black hover:bg-gray-800 text-white rounded-xl font-semibold transition-all duration-150 flex items-center justify-center space-x-2 active:scale-95 shadow-lg"
             >
               <RotateCcw size={18} />
               <span>Reorder for ${order.totalAmount.toFixed(2)}</span>
